@@ -1,0 +1,29 @@
+  if(accountFromPg.accountType === 'Checking' && accountToPg.accountType === 'Savings'){
+    await client
+    .db('TrinityCapital')
+    .collection('User Profiles')
+    .updateOne(
+      { 'checkingAccount.accountHolder': memberNamePg },
+      { $set: { 'checkingAccount.transactions': balance } }
+    );
+  }
+
+
+
+
+   await client
+      .db('TrinityCapital')
+      .collection('User Profiles')
+      .updateOne(
+        { 'checkingAccount.accountHolder': memberNamePg },
+        {
+          $push: {
+            'checkingAccount.transactions': {
+              amount: -amount,
+              interval: 'once',
+              Name: ` ${accountFromPg.accountType} ---> ${accountToPg.accountType}`,
+              Category: 'Transfer',
+            },
+          },
+        }
+      );
